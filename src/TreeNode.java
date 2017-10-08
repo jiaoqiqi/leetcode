@@ -5,7 +5,4 @@
       TreeNode right;
       TreeNode(int x) { val = x; }
 
-    public TreeNode() {
-
-    }
 }
