@@ -10,7 +10,7 @@ public class ComplexMultiplyNumber {
         int b_false = Integer.parseInt(y[1]);
         System.out.println(a_false);
 
-        return (a_real * b_real + a_false * b_false) + "+" + (a_real * b_false - a_false * b_real) + "i";
+        return (a_real * b_real - a_false * b_false) + "+" + (a_real * b_false + a_false * b_real) + "i";
     }
 
     public static void main(String []args){
