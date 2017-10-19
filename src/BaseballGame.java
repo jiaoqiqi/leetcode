@@ -12,6 +12,7 @@ public class BaseballGame {
             }
             else if (op.equals("D")) {
                 list.add(list.peekLast() * 2);
+                System.out.println(list.peekLast());
                 sum += list.peekLast();
             }
             else if (op.equals("+")) {
