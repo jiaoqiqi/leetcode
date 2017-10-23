@@ -1,5 +1,7 @@
 begin
+  c:= 45;
  ab2a:=9;
+ _fdsh:=123;
  if x>=0 then x:=x+1;
  while a=0 do
   b:=a*x/33455;
