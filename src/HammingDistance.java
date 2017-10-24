@@ -1,3 +1,5 @@
+//https://leetcode.com/problems/hamming-distance/description/
+
 public class HammingDistance {
     private int hammingDistance(int x, int y) {
         String a  = Integer.toBinaryString(x);

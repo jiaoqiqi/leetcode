@@ -1,4 +1,6 @@
-public class IslandPerimer {
+//https://leetcode.com/problems/island-perimeter/description/
+
+public class IslandPerimeter {
     public static int islandPerimeter(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
         int result = 0;
@@ -16,7 +18,7 @@ public class IslandPerimer {
 
     public static void main(String[] args) {
         int[][] grid = {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}};
-        IslandPerimer islandPerimer = new IslandPerimer();
+        IslandPerimeter islandPerimer = new IslandPerimeter();
         System.out.println(islandPerimer.islandPerimeter(grid));
     }
 }

@@ -1,6 +1,5 @@
-import java.util.Arrays;
-
 //https://leetcode.com/problems/next-greater-element-i/description/
+
 public class NextGreater {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         int [] result = new int[nums1.length];
