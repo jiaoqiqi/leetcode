@@ -1,5 +1,4 @@
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
 
 //https://leetcode.com/problems/array-partition-i/description/
 public class ArrayPairSum {
