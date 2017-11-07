@@ -1,19 +1,16 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+//https://leetcode.com/problems/arithmetic-slices/description/
 
 public class ArithmeticSlices {
     public int numberOfArithmeticSlices(int[] A) {
-        int result = 0;
-        for (int i = 0; i <= A.length-3; i++) {
-            for (int j = i+2; j < A.length; j++) {
-                if (isArithmetic(subArray(A,i,j))){
-                    result++;
-                }
+        int curr = 0, sum = 0;
+        for (int i=2; i<A.length; i++)
+            if (A[i]-A[i-1] == A[i-1]-A[i-2]) {
+                curr += 1;
+                sum += curr;
+            } else {
+                curr = 0;
             }
-
-        }
-        return result;
+        return sum;
     }
 
     public boolean isArithmetic(int[] arr){
