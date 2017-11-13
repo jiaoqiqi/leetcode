@@ -1,0 +1,3 @@
+S -> aSe|B
+B -> bBe|C
+C -> cCe|d

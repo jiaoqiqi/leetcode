@@ -1,0 +1,3 @@
+S#aSe|B -> aSe|B
+B#bBe|C -> bBe|C
+C#cCe|d -> cCe|d
