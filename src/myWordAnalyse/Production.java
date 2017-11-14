@@ -1,28 +1,27 @@
-package wordAnalyse;
+package myWordAnalyse;
 
 import java.util.ArrayList;
 
-
 // 产生式类
-public class Production{
+public class Production {
     String left;
     String[] right;
     // 初始化select集
     ArrayList<String> select = new ArrayList<String>();
-    public Production(String left, String[] right){
+
+    public Production(String left, String[] right) {
         this.left = left;
         this.right = right;
     }
 
-    public String[] returnRights(){
+    public String[] returnRights() {
         return right;
     }
 
-    public String returnLeft(){
+    public String returnLeft() {
         return left;
     }
-
-
-
 }
+
+
 
