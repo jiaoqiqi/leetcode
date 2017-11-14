@@ -1,3 +1,4 @@
-S->aSe|B
-B->bBe|C
-C->cCe|d
+E->+T|G
+T->*F
+F->(E)|i
+G->a

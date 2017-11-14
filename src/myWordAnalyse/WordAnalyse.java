@@ -1,3 +1,5 @@
+package myWordAnalyse;
+
 import java.io.*;
 
 public class WordAnalyse {

@@ -3,7 +3,7 @@ package myWordAnalyse;
 import java.util.ArrayList;
 
 // 产生式类
-public class Production {
+ class Production {
     String left;
     String[] right;
     // 初始化select集
@@ -22,6 +22,3 @@ public class Production {
         return left;
     }
 }
-
-
-
