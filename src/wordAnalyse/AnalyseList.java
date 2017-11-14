@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AnalyseList{
+public class AnalyseList {
 
     // 成员变量,产生式集，终结符集，非终结符集
     ArrayList<Production> productions;
@@ -14,7 +14,7 @@ public class AnalyseList{
     HashMap<String, ArrayList<String>> firsts;
     HashMap<String, ArrayList<String>> follows;
 
-    public AnalyseList(){
+    public AnalyseList() {
         productions = new ArrayList<Production>();
         terminals = new ArrayList<String>();
         nonterminals = new ArrayList<String>();
@@ -34,7 +34,7 @@ public class AnalyseList{
     }
 
     // 从文件中读取产生式
-    public void setProductions(){
+    public void setProductions() {
         try {
             File file = new File("grammar.txt");
             RandomAccessFile randomfile = new RandomAccessFile(file, "r");
@@ -42,7 +42,7 @@ public class AnalyseList{
             String left;
             String right;
             Production production;
-            while ((line=randomfile.readLine())!=null) {
+            while ((line = randomfile.readLine()) != null) {
                 left = line.split("->")[0].trim();
 //                System.out.println(left);
                 right = line.split("->")[1].trim();
@@ -58,19 +58,17 @@ public class AnalyseList{
     }
 
     // 获得非终结符集
-    public void setNonTerminals(){
+    public void setNonTerminals() {
         try {
             File file = new File("grammar.txt");
             RandomAccessFile randomfile = new RandomAccessFile(file, "r");
             String line;
             String left;
-            while ((line=randomfile.readLine())!=null) {
+            while ((line = randomfile.readLine()) != null) {
                 left = line.split("->")[0].trim();
-                if(nonterminals.contains(left)){
-//                    System.out.println(left);
+                if (nonterminals.contains(left)) {
                     continue;
-                }
-                else {
+                } else {
                     nonterminals.add(left);
                 }
             }
@@ -81,27 +79,24 @@ public class AnalyseList{
     }
 
     // 获得终结符集,依赖于获得产生式函数
-    public void setTerminals(){
+    public void setTerminals() {
         // 遍历所有的产生式
         String[] rights;
         for (int i = 0; i < productions.size(); i++) {
             rights = productions.get(i).returnRights();
             // 从右侧寻找终结符
             for (int j = 0; j < rights.length; j++) {
-                if(nonterminals.contains(rights[j])||rights[j].equals("$")){
+                if (nonterminals.contains(rights[j]) || rights[j].equals("$")) {
                     continue;
-                }
-                else {
+                } else {
                     terminals.add(rights[j]);
-
-                    System.out.println(terminals);
                 }
             }
         }
     }
 
     // 获取First集
-    public void getFirst(){
+    public void getFirst() {
         // 终结符全部求出first集
         ArrayList<String> first;
         for (int i = 0; i < terminals.size(); i++) {
@@ -127,26 +122,24 @@ public class AnalyseList{
                 for (int j = 0; j < rights.length; j++) {
                     right = rights[j];
                     // right是否存在，遇到空怎么办
-                    if(!right.equals("$")){
+                    if (!right.equals("$")) {
                         for (int l = 0; l < firsts.get(right).size(); l++) {
-                            if(firsts.get(left).contains(firsts.get(right).get(l))){
+                            if (firsts.get(left).contains(firsts.get(right).get(l))) {
                                 continue;
-                            }
-                            else {
+                            } else {
                                 firsts.get(left).add(firsts.get(right).get(l));
-                                flag=false;
+                                flag = false;
                             }
                         }
                     }
                     if (isCanBeNull(right)) {
                         continue;
-                    }
-                    else {
+                    } else {
                         break;
                     }
                 }
             }
-            if (flag==true) {
+            if (flag == true) {
                 break;
             }
 
@@ -155,7 +148,7 @@ public class AnalyseList{
     }
 
     // 获得Follow集
-    public void getFollow(){
+    public void getFollow() {
         // 所有非终结符的follow集初始化一下
         ArrayList<String> follow;
         for (int i = 0; i < nonterminals.size(); i++) {
@@ -180,34 +173,31 @@ public class AnalyseList{
                     // 非终结符
                     if (nonterminals.contains(right)) {
                         fab = true;
-                        for(int k=j+1;k<rights.length;k++){
+                        for (int k = j + 1; k < rights.length; k++) {
 
                             // 查找first集
-                            for(int v=0;v<firsts.get(rights[k]).size();v++){
+                            for (int v = 0; v < firsts.get(rights[k]).size(); v++) {
                                 // 将后一个元素的first集加入到前一个元素的follow集中
-                                if(follows.get(right).contains(firsts.get(rights[k]).get(v))){
+                                if (follows.get(right).contains(firsts.get(rights[k]).get(v))) {
                                     continue;
-                                }
-                                else {
+                                } else {
                                     follows.get(right).add(firsts.get(rights[k]).get(v));
-                                    flag=false;
+                                    flag = false;
                                 }
                             }
                             if (isCanBeNull(rights[k])) {
                                 continue;
-                            }
-                            else {
+                            } else {
                                 fab = false;
                                 break;
                             }
                         }
-                        if(fab){
+                        if (fab) {
                             left = productions.get(i).returnLeft();
                             for (int p = 0; p < follows.get(left).size(); p++) {
                                 if (follows.get(right).contains(follows.get(left).get(p))) {
                                     continue;
-                                }
-                                else {
+                                } else {
                                     follows.get(right).add(follows.get(left).get(p));
                                     flag = false;
                                 }
@@ -217,7 +207,7 @@ public class AnalyseList{
 
                 }
             }
-            if(flag==true){
+            if (flag == true) {
                 break;
             }
         }
@@ -226,15 +216,15 @@ public class AnalyseList{
         String left;
         for (int j = 0; j < nonterminals.size(); j++) {
             left = nonterminals.get(j);
-            for (int v=0; v<follows.get(left).size(); v++) {
-                if(follows.get(left).get(v).equals("#"))
+            for (int v = 0; v < follows.get(left).size(); v++) {
+                if (follows.get(left).get(v).equals("#"))
                     follows.get(left).remove(v);
             }
         }
     }
 
     // 获取Select集
-    public void getSelect(){
+    public void getSelect() {
         String left;
         String right;
         String[] rights;
@@ -244,19 +234,17 @@ public class AnalyseList{
         for (int i = 0; i < productions.size(); i++) {
             left = productions.get(i).returnLeft();
             rights = productions.get(i).returnRights();
-            if(rights[0].equals("$")){
+            if (rights[0].equals("$")) {
                 // select(i) = follow(A)
                 follow = follows.get(left);
                 for (int j = 0; j < follow.size(); j++) {
-                    if(productions.get(i).select.contains(follow.get(j))){
+                    if (productions.get(i).select.contains(follow.get(j))) {
                         continue;
-                    }
-                    else {
+                    } else {
                         productions.get(i).select.add(follow.get(j));
                     }
                 }
-            }
-            else {
+            } else {
                 boolean flag = true;
                 for (int j = 0; j < rights.length; j++) {
                     right = rights[j];
@@ -264,15 +252,13 @@ public class AnalyseList{
                     for (int v = 0; v < first.size(); v++) {
                         if (productions.get(i).select.contains(first.get(v))) {
                             continue;
-                        }
-                        else {
+                        } else {
                             productions.get(i).select.add(first.get(v));
                         }
                     }
-                    if(isCanBeNull(right)){
+                    if (isCanBeNull(right)) {
                         continue;
-                    }
-                    else {
+                    } else {
                         flag = false;
                         break;
                     }
@@ -282,8 +268,7 @@ public class AnalyseList{
                     for (int j = 0; j < follow.size(); j++) {
                         if (productions.get(i).select.contains(follow.get(j))) {
                             continue;
-                        }
-                        else {
+                        } else {
                             // 刚刚这里出现了一个问题，已经被解决啦
                             productions.get(i).select.add(follow.get(j));
                         }
@@ -294,22 +279,22 @@ public class AnalyseList{
     }
 
     // 生成产生式
-    public void Predict(){
+    public void Predict() {
         Production production;
         String line;
         String[] rights;
         try {
             File file = new File("predictldy.txt");
-            RandomAccessFile randomfile = new RandomAccessFile(file,"rw");
+            RandomAccessFile randomfile = new RandomAccessFile(file, "rw");
             for (int i = 0; i < productions.size(); i++) {
                 production = productions.get(i);
                 for (int j = 0; j < production.select.size(); j++) {
-                    line = production.returnLeft()+"#"+production.select.get(j)+" ->";
+                    line = production.returnLeft() + "#" + production.select.get(j) + " ->";
                     rights = production.returnRights();
                     for (int v = 0; v < rights.length; v++) {
-                        line = line+" "+rights[v];
+                        line = line + " " + rights[v];
                     }
-                    line = line+"\n";
+                    line = line + "\n";
                     // 写入文件
                     randomfile.writeBytes(line);
                 }
@@ -324,8 +309,8 @@ public class AnalyseList{
     }
 
     // 判断是否是终结符
-    public boolean isTerminal(String symbol){
-        if(terminals.contains(symbol))
+    public boolean isTerminal(String symbol) {
+        if (terminals.contains(symbol))
             return true;
         else {
             return false;
@@ -333,7 +318,7 @@ public class AnalyseList{
     }
 
     // 判断是否产生$
-    public boolean isCanBeNull(String symbol){
+    public boolean isCanBeNull(String symbol) {
         String[] rights;
         for (int i = 0; i < productions.size(); i++) {
             // 找到产生式
@@ -347,7 +332,7 @@ public class AnalyseList{
         return false;
     }
 
-    public static void main(String []args){
+    public static void main(String[] args) {
         AnalyseList analyseList = new AnalyseList();
 //        analyseList.setProductions();
         analyseList.setNonTerminals();
