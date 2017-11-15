@@ -74,7 +74,7 @@ public class AnalyseList {
                 rights = right.split("");
                 for (int i = 0; i < rights.length; i++) {
                     if (nonTerminals.contains(rights[i]) ||
-                            rights[i].equals("$") ||
+//                            rights[i].equals("$") ||
                             rights[i].equals("|") ||
                             terminals.contains(rights[i])) {
                         continue;
@@ -119,6 +119,18 @@ public class AnalyseList {
             }
         }
         return first;
+    }
+
+    private Production findProd(String left) {
+        Production findLeft = productions.get(0);
+        for (int i = 0; i < productions.size(); i++) {
+            if (productions.get(i).left.equals(left)) {
+                findLeft = productions.get(i);
+                break;
+            }
+        }
+//        System.out.println(findLeft.left);
+        return findLeft;
     }
 
     private void setFollows(){
@@ -191,17 +203,7 @@ public class AnalyseList {
         return findRight;
     }
 
-    private Production findProd(String left) {
-        Production findLeft = productions.get(0);
-        for (int i = 0; i < productions.size(); i++) {
-            if (productions.get(i).left.equals(left)) {
-                findLeft = productions.get(i);
-                break;
-            }
-        }
-//        System.out.println(findLeft.left);
-        return findLeft;
-    }
+
 
 
     public static void main(String[] args) {
