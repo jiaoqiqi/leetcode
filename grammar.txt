@@ -1,4 +1,5 @@
-E->+T|G
-T->*F
+E->TA
+A->+TA|$
+T->FB
+B->*FB|$
 F->(E)|i
-G->a
