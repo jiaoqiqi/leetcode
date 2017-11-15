@@ -100,7 +100,7 @@ public class AnalyseList {
         for (String s : nonTerminals) {
             firsts.put(s, getFirst(s));
         }
-        System.out.println(firsts);
+//        System.out.println(firsts);
     }
 
     private ArrayList<String> getFirst(String left) {
@@ -125,53 +125,69 @@ public class AnalyseList {
         for (String s : nonTerminals) {
             follows.put(s, getFollow(s));
         }
-//        System.out.println(follows);
+        System.out.println(follows);
     }
 
     private ArrayList<String> getFollow(String leftAtRight) {
         ArrayList<String> follow = new ArrayList<>();
         follow.add("#");
-        ArrayList LR = findNonTerminalAtRight(leftAtRight); //包含非终结符的右部的数组
+        ArrayList<Production> LR = findNonTerminalAtRight(leftAtRight); //右部包含非终结符的产生式的数组
         for (int i = 0; i < LR.size(); i++) {
-            String containRight = LR.get(i).toString();  //每一个包含的本次要找的非终结符的字符串
-            String[] splitContain = containRight.split("");
-            if (!(leftAtRight.equals(splitContain[containRight.length() - 1]))) { //如果非终结符不在最后的位置
-                String willAdd = splitContain[containRight.indexOf(leftAtRight) + 1];  //就找到他的下一个字符
-
-                if (terminals.contains(willAdd)) { //如果是终结符直接加入follow集
-                    follow.add(willAdd);
-                } else {  //如果是非终结符，加入他除去$的first集
-                    ArrayList<String> firstWillAdd = getFirst(willAdd);
-                    System.out.println(firstWillAdd);
-                    for (int j = 0; j < firstWillAdd.size(); j++) {
-                        if (follow.contains(firstWillAdd.get(i))) {
-                            continue;
-                        } else if (!firstWillAdd.get(i).equals("$")) {
-                            follow.add(firstWillAdd.get(i));
+            String[] containRight = LR.get(i).right;  //每一个包含本次要找的非终结符的字符串
+            for (int j = 0; j < containRight.length; j++) {
+                String s = containRight[j];
+//                System.out.println(s);
+                if (s.contains(leftAtRight)){
+                    String[] splitS = s.split("");
+                    if (!leftAtRight.equals(splitS[splitS.length-1])){  //不在最后一个位置
+                        String willAdd = splitS[s.indexOf(leftAtRight) +1];
+                        if (terminals.contains(willAdd) && !follow.contains(willAdd)){  //后面跟的非终结符，直接加进去
+                            follow.add(willAdd);
                         }
+                        if(nonTerminals.contains(willAdd)){ //后面跟的非终结符，加进去他的follow集
+                            for (int k = 0; k < getFollow(willAdd).size(); k++) {
+                                if (!follow.contains(getFollow(willAdd).get(k))){
+                                    follow.add(getFollow(willAdd).get(k));
+                                }
+                            }
 
+                            ArrayList<String> first = getFirst(willAdd);  //后面跟的非终结符first里面有空
+                            while (first.contains("$")){
+                                for (int k = 0; k < first.size(); k++) {
+                                    if (!first.get(k).equals("$") && !follow.contains(first.get(k))){
+                                        follow.add(first.get(k));
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                    if (leftAtRight.equals(splitS[splitS.length-1])){
+                        if (getFirst(leftAtRight).contains("$")){
+                            String left = LR.get(i).left;
+                            follow.addAll(getFirst(left));
+                        }
                     }
                 }
+
             }
         }
-//        System.out.println(follow);
+        System.out.println(follow);
         return follow;
     }
 
-    private ArrayList<String> findNonTerminalAtRight(String LR) {
-        ArrayList<String> findRight = new ArrayList<>();
+    private ArrayList<Production> findNonTerminalAtRight(String LR) {
+        ArrayList<Production> findRight = new ArrayList<Production>();
         for (int i = 0; i < productions.size(); i++) {
             String[] rights = productions.get(i).right;
             for (int j = 0; j < rights.length; j++) {
                 String right = rights[j];
 //                System.out.println(right);
                 if (right.contains(LR)) {
-                    findRight.add(right);
+                    findRight.add(productions.get(i));
                 }
-
             }
         }
-
         return findRight;
     }
 
@@ -195,8 +211,8 @@ public class AnalyseList {
         analyseList.setTerminals();
         analyseList.setFirst();
 //        analyseList.findNonTerminalAtRight("F");
-//        analyseList.getFollow("E");
-        analyseList.setFollows();
+        analyseList.getFollow("E");
+//        analyseList.setFollows();
 
     }
 }
