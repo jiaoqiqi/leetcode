@@ -162,7 +162,7 @@ public class AnalyseList {
                             }
                         }
                     }
-                    if (leftAtRight.equals(splitS[splitS.length-1])){
+                    if (leftAtRight.equals(splitS[splitS.length-1])){ //如果他在最后一个而且first集里面有空
                         if (getFirst(leftAtRight).contains("$")){
                             String left = LR.get(i).left;
                             follow.addAll(getFirst(left));
@@ -172,7 +172,7 @@ public class AnalyseList {
 
             }
         }
-        System.out.println(follow);
+//        System.out.println(follow);
         return follow;
     }
 
@@ -211,8 +211,8 @@ public class AnalyseList {
         analyseList.setTerminals();
         analyseList.setFirst();
 //        analyseList.findNonTerminalAtRight("F");
-        analyseList.getFollow("E");
-//        analyseList.setFollows();
+//        analyseList.getFollow("E");
+        analyseList.setFollows();
 
     }
 }
