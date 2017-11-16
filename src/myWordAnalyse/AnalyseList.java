@@ -133,7 +133,7 @@ public class AnalyseList {
         return findLeft;
     }
 
-    private void setFollows(){
+    private void setFollows() {
         for (String s : nonTerminals) {
             follows.put(s, getFollow(s));
         }
@@ -149,35 +149,53 @@ public class AnalyseList {
             for (int j = 0; j < containRight.length; j++) {
                 String s = containRight[j];
 //                System.out.println(s);
-                if (s.contains(leftAtRight)){
+                if (s.contains(leftAtRight)) {
+//                    System.out.println(s);
                     String[] splitS = s.split("");
-                    if (!leftAtRight.equals(splitS[splitS.length-1])){  //不在最后一个位置
-                        String willAdd = splitS[s.indexOf(leftAtRight) +1];
-                        if (terminals.contains(willAdd) && !follow.contains(willAdd)){  //后面跟的非终结符，直接加进去
+                    if (!leftAtRight.equals(splitS[splitS.length - 1])) {  //不在最后一个位置
+                        String willAdd = splitS[s.indexOf(leftAtRight) + 1];
+                        if (terminals.contains(willAdd) && !follow.contains(willAdd)) {  //后面跟的非终结符，直接加进去
                             follow.add(willAdd);
                         }
-                        if(nonTerminals.contains(willAdd)){ //后面跟的非终结符，加进去他的follow集
-                            for (int k = 0; k < getFollow(willAdd).size(); k++) {
-                                if (!follow.contains(getFollow(willAdd).get(k))){
-                                    follow.add(getFollow(willAdd).get(k));
-                                }
-                            }
+                        if (nonTerminals.contains(willAdd)) {  //后面跟的非终结符
+//                            System.out.println(willAdd);
+                            ArrayList<String> first = getFirst(willAdd);  //后面跟的非终结符的first
+                            if (first.contains("$")) {    //后面跟的非终结符first里面有空 加产生式左部的follow
+                                    String left = LR.get(i).left;
+                                    if (willAdd.equals(left)){
+                                        for (int k = 0; k < getFirst(left).size(); k++) {
+                                            if (follow.contains(getFirst(left).get(k)) || getFirst(left).equals("$")) {
 
-                            ArrayList<String> first = getFirst(willAdd);  //后面跟的非终结符first里面有空
-                            while (first.contains("$")){
-                                for (int k = 0; k < first.size(); k++) {
-                                    if (!first.get(k).equals("$") && !follow.contains(first.get(k))){
-                                        follow.add(first.get(k));
+                                                continue;
+                                            } else {
+                                                follow.add(getFirst(left).get(k));
+                                            }
+                                        }
                                     }
+                                        for (int m = 0; m < getFollow(left).size(); m++) {
+                                            if (follow.contains(getFollow(left).get(m))) {
+                                                continue;
+                                            } else {
+                                                follow.add(getFollow(left).get(m));
 
-                                }
+                                            }
+                                        }
                             }
                         }
                     }
-                    if (leftAtRight.equals(splitS[splitS.length-1])){ //如果他在最后一个而且first集里面有空
-                        if (getFirst(leftAtRight).contains("$")){
-                            String left = LR.get(i).left;
-                            follow.addAll(getFirst(left));
+                    if (leftAtRight.equals(splitS[splitS.length - 1]) && getFirst(leftAtRight).contains("$")) { //如果他在最后一个而且first集里面有空
+                        String left = LR.get(i).left;
+                        if (!left.equals(leftAtRight)) {
+                            for (int k = 0; k < getFollow(left).size(); k++) {
+                                if (follow.contains(getFollow(left).get(k))) {
+                                    continue;
+                                } else {
+                                    follow.add(getFollow(left).get(k));
+
+                                }
+
+                            }
+
                         }
                     }
                 }
@@ -185,6 +203,9 @@ public class AnalyseList {
             }
         }
 //        System.out.println(follow);
+        if (follow.contains("$")){
+            follow.remove("$");
+        }
         return follow;
     }
 
@@ -202,8 +223,6 @@ public class AnalyseList {
         }
         return findRight;
     }
-
-
 
 
     public static void main(String[] args) {
