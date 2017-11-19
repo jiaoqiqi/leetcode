@@ -7,6 +7,7 @@ public class MapSumPairs {
 
     public void insert(String key, int val) {
 
+
     }
 
     public int sum(String prefix) {
