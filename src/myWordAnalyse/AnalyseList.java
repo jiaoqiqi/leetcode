@@ -100,6 +100,7 @@ public class AnalyseList {
         for (String s : nonTerminals) {
             firsts.put(s, getFirst(s));
         }
+//        System.out.println("First集：");
 //        System.out.println(firsts);
     }
 
@@ -137,7 +138,8 @@ public class AnalyseList {
         for (String s : nonTerminals) {
             follows.put(s, getFollow(s));
         }
-        System.out.println(follows);
+//        System.out.println("Follow集");
+//        System.out.println(follows);
     }
 
     private ArrayList<String> getFollow(String leftAtRight) {
@@ -161,25 +163,25 @@ public class AnalyseList {
 //                            System.out.println(willAdd);
                             ArrayList<String> first = getFirst(willAdd);  //后面跟的非终结符的first
                             if (first.contains("$")) {    //后面跟的非终结符first里面有空 加产生式左部的follow
-                                    String left = LR.get(i).left;
-                                    if (willAdd.equals(left)){
-                                        for (int k = 0; k < getFirst(left).size(); k++) {
-                                            if (follow.contains(getFirst(left).get(k)) || getFirst(left).equals("$")) {
+                                String left = LR.get(i).left;
+                                if (willAdd.equals(left)) {
+                                    for (int k = 0; k < getFirst(left).size(); k++) {
+                                        if (follow.contains(getFirst(left).get(k)) || getFirst(left).equals("$")) {
 
-                                                continue;
-                                            } else {
-                                                follow.add(getFirst(left).get(k));
-                                            }
+                                            continue;
+                                        } else {
+                                            follow.add(getFirst(left).get(k));
                                         }
                                     }
-                                        for (int m = 0; m < getFollow(left).size(); m++) {
-                                            if (follow.contains(getFollow(left).get(m))) {
-                                                continue;
-                                            } else {
-                                                follow.add(getFollow(left).get(m));
+                                }
+                                for (int m = 0; m < getFollow(left).size(); m++) {
+                                    if (follow.contains(getFollow(left).get(m))) {
+                                        continue;
+                                    } else {
+                                        follow.add(getFollow(left).get(m));
 
-                                            }
-                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -203,7 +205,7 @@ public class AnalyseList {
             }
         }
 //        System.out.println(follow);
-        if (follow.contains("$")){
+        if (follow.contains("$")) {
             follow.remove("$");
         }
         return follow;
@@ -224,6 +226,76 @@ public class AnalyseList {
         return findRight;
     }
 
+    //构造分析表
+    public void predictedTable() {
+        String left;
+        String right;
+        String[] rights;
+        ArrayList<String> follow = new ArrayList<String>();
+        ArrayList<String> first = new ArrayList<String>();
+
+        ArrayList<String> allNonTerminal = new ArrayList<String>();
+        ArrayList<String> allTerminals = new ArrayList<String>();
+        allNonTerminal.addAll(nonTerminals);
+        allTerminals.addAll(terminals);
+        allTerminals.add("#");
+
+        int row = allNonTerminal.size();
+        int col = allTerminals.size();
+
+        //初始化为error
+        String[][] M = new String[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                M[i][j] = "error";
+            }
+
+        }
+
+        //构造分析表M的算法是：
+        //(1) 对文法G的每个产生式A->a执行第二步和第三步;
+        //(2) 对每个终结符a∈FIRST(A),把A->a加至M[A,a]中;
+        //(3) 若ε∈FIRST(a),则把任何b∈FOLLOW(A)把A->a加至M[A,b]中;
+        //(4) 把所有无定义的M[A,a]标上出错标志.
+
+        for (int i = 0; i < productions.size(); i++) {
+            left = productions.get(i).left;
+            rights = productions.get(i).right;
+            first = getFirst(left);
+
+            for (int j = 0; j < rights.length; j++) {
+                right = rights[j];
+                if (!right.equals("$")){
+                    String[] splitedRight = right.split("");
+                    for (int k = 0; k < splitedRight.length; k++) {
+                        String s = splitedRight[k];
+                        int AIndex = allNonTerminal.indexOf(left);
+                        int aIndex = allTerminals.indexOf(s);
+                        if (allTerminals.contains(s) && first.contains(s)){
+                            M[AIndex][aIndex] = right;
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        for (int i = 0 ; i < allTerminals.size() ; ++i){
+            System.out.print(allTerminals.get(i) + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < row; i++) {
+            System.out.print(allNonTerminal.get(i)+" ");
+
+            for (int j = 0; j < col; j++) {
+                System.out.print(M[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
 
     public static void main(String[] args) {
         AnalyseList analyseList = new AnalyseList();
@@ -234,6 +306,7 @@ public class AnalyseList {
 //        analyseList.findNonTerminalAtRight("F");
 //        analyseList.getFollow("E");
         analyseList.setFollows();
+        analyseList.predictedTable();
 
     }
 }
