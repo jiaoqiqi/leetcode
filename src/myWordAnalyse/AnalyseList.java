@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.SimpleFormatter;
+import java.util.Formatter;
 
 public class AnalyseList {
 
@@ -228,6 +230,9 @@ public class AnalyseList {
 
     //构造分析表
     public void predictedTable() {
+
+        Formatter formatter = new Formatter(System.out);
+
         String left;
         String right;
         String[] rights;
@@ -261,36 +266,57 @@ public class AnalyseList {
         for (int i = 0; i < productions.size(); i++) {
             left = productions.get(i).left;
             rights = productions.get(i).right;
-            first = getFirst(left);
+            first = getFirst(left);  //左部的first集合
+            follow = getFollow(left);
 
-            for (int j = 0; j < rights.length; j++) {
+            for (int j = 0; j < rights.length; j++) {   //遍历右部的每一个部分
                 right = rights[j];
-                if (!right.equals("$")){
+                if (!right.equals("$")) {
                     String[] splitedRight = right.split("");
                     for (int k = 0; k < splitedRight.length; k++) {
                         String s = splitedRight[k];
-                        int AIndex = allNonTerminal.indexOf(left);
-                        int aIndex = allTerminals.indexOf(s);
-                        if (allTerminals.contains(s) && first.contains(s)){
+                        if (first.contains(s)) {
+                            int AIndex = allNonTerminal.indexOf(left);  //数组中左部的位置
+                            int aIndex = allTerminals.indexOf(s);   //M数组中右部元素的位置
                             M[AIndex][aIndex] = right;
+                        } else {
+                            ArrayList<String> firstRight = getFirst(splitedRight[k]);
+                            for (int l = 0; l < firstRight.size(); l++) {
+                                if (first.contains(firstRight.get(l))) {
+                                    int AIndex = allNonTerminal.indexOf(left);  //数组中左部的位置
+                                    int aIndex = allTerminals.indexOf(firstRight.get(l));   //M数组中右部元素的位置
+                                    M[AIndex][aIndex] = right;
+                                }
+                            }
                         }
 
+                    }
+                } else {
+                    for (int k = 0; k < follow.size(); k++) {
+                        String followItem = follow.get(k);
+                        int index = allTerminals.indexOf(followItem);
+                        int Aindex = allNonTerminal.indexOf(left);
+                        M[Aindex][index] = "$";
                     }
                 }
             }
 
         }
 
-        for (int i = 0 ; i < allTerminals.size() ; ++i){
-            System.out.print(allTerminals.get(i) + " ");
+
+        //格式化输出M
+        System.out.print("        ");
+        for (int i = 0; i < allTerminals.size(); ++i) {
+            formatter.format("%10s", allTerminals.get(i));
+
         }
         System.out.println();
 
         for (int i = 0; i < row; i++) {
-            System.out.print(allNonTerminal.get(i)+" ");
+            formatter.format("%10s", allNonTerminal.get(i));
 
             for (int j = 0; j < col; j++) {
-                System.out.print(M[i][j] + " ");
+                formatter.format("%10s", M[i][j]);
             }
             System.out.println();
         }
@@ -298,6 +324,9 @@ public class AnalyseList {
     }
 
     public static void main(String[] args) {
+//        Formatter formatter = new Formatter(System.out);
+//        formatter.format("%-15s %5d %10.2f\n", "My name is huhx", 5, 4.2);
+
         AnalyseList analyseList = new AnalyseList();
         analyseList.setProductions();
         analyseList.setNonTerminals();
