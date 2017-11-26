@@ -385,7 +385,7 @@ public class AnalyseList {
                         System.out.println("出错，出错位置为"+index);
                     }
                     if (tmp.equals("$")){
-                       String  ss="执行 "+ analyseStack.pop()+ " -> " + tmp;
+                       String  ss="执行 "+ analyseStack.peek()+ " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
                                 str.substring(index),
@@ -395,7 +395,7 @@ public class AnalyseList {
                             analyseStack.push(String.valueOf(tmp.charAt(k)));
                         }
                     }else {
-                        String ss="执行 "+ analyseStack.pop()+ " -> " + tmp;
+                        String ss="执行 "+ analyseStack.peek()+ " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
                                 str.substring(index),
