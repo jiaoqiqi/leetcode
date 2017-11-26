@@ -3,10 +3,7 @@ package myWordAnalyse;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.SimpleFormatter;
-import java.util.Formatter;
+import java.util.*;
 
 public class AnalyseList {
 
@@ -229,7 +226,7 @@ public class AnalyseList {
     }
 
     //构造分析表
-    public void predictedTable() {
+    public String[][] predictedTable() {
 
         Formatter formatter = new Formatter(System.out);
 
@@ -324,6 +321,101 @@ public class AnalyseList {
             System.out.println();
         }
 
+        return M;
+
+    }
+
+    public String Analyse(String str){
+        Formatter formatter = new Formatter(System.out);  //格式化输出的实例化
+        String[][] M = predictedTable();
+
+        HashMap<String , Integer> tableMap = new HashMap<String , Integer>();
+        for (int i = 0; i < terminals.size(); ++i) {
+            tableMap.put(terminals.get(i),i);
+        }
+        tableMap.put("#",terminals.size());
+        for (int i = 0; i < nonTerminals.size(); ++i) {
+            tableMap.put(nonTerminals.get(i),i);
+        }
+
+        //格式化输出hashmap
+//        Iterator iter = tableMap.entrySet().iterator();
+//        while (iter.hasNext()) {
+//            Map.Entry entry = (Map.Entry) iter.next();
+//            Object key = entry.getKey();
+//            Object value = entry.getValue();
+//            System.out.println(key + ":" + value);
+//
+//        }
+
+        formatter.format("%10s", "符号栈");
+        formatter.format("%15s", "输入串");
+        formatter.format("%15s", "所用产生式");
+        System.out.println();
+
+        Stack<String> analyseStack = new Stack<String>();  //初始化栈
+        analyseStack.push("#");
+        analyseStack.push(productions.get(0).left);
+
+        str+="#";
+
+        int index =0;  //用来找字符串的元素
+
+        while (!analyseStack.empty()){
+            String topItem = analyseStack.peek();   //栈顶元素
+
+            if (topItem=="#" || terminals.contains(topItem)){   //栈顶是终结符的话
+                if (String.valueOf(str.charAt(index))== topItem){   //如果跟输入串相等  栈里面的出栈  index+1
+                    formatter.format("%15s %15s %15s",
+                            getStackContent(analyseStack),
+                            str.substring(index),
+                            analyseStack.peek() .equals("#") ? "接受" : "匹配");
+                    index++;
+                    analyseStack.pop();
+
+                }else{
+                    return ("出错，出错位置为"+index);
+                }
+            }else{  //栈顶为非终结符
+                int i = tableMap.get(analyseStack.peek());
+                int j = tableMap.get(String.valueOf(str.charAt(index)));
+                if (i < M.length && j < M[0].length){
+                    String tmp = M[i][j];
+                    if (tmp.equals("error")){
+                        System.out.println("出错，出错位置为"+index);
+                    }
+                    if (tmp.equals("$")){
+                       String  ss="执行 "+ analyseStack.pop()+ " -> " + tmp;
+                        formatter.format("%15s %15s %15s",
+                                getStackContent(analyseStack),
+                                str.substring(index),
+                                ss);
+                        analyseStack.pop();
+                        for (int k =tmp.length()-1;k>=0;--k) {
+                            analyseStack.push(String.valueOf(tmp.charAt(k)));
+                        }
+                    }else {
+                        String ss="执行 "+ analyseStack.pop()+ " -> " + tmp;
+                        formatter.format("%15s %15s %15s",
+                                getStackContent(analyseStack),
+                                str.substring(index),
+                                ss);
+                        analyseStack.pop();
+
+                    }
+                }
+            }
+        }
+        return "accept";
+    }
+
+    public  String getStackContent(Stack sta){
+        String s="";
+        while (!sta.empty()){
+            s = sta.peek()+s;
+            sta.pop();
+        }
+        return s;
     }
 
     public static void main(String[] args) {
@@ -334,7 +426,10 @@ public class AnalyseList {
         analyseList.setTerminals();
         analyseList.setFirst();
         analyseList.setFollows();
-        analyseList.predictedTable();
+//        analyseList.predictedTable();
+        analyseList.Analyse("i*i+i");
+
+
 
     }
 }
