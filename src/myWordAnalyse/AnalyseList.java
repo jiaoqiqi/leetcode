@@ -244,6 +244,9 @@ public class AnalyseList {
         allNonTerminal.addAll(nonTerminals);
         allTerminals.addAll(terminals);
         allTerminals.add("#");
+        allTerminals.remove("$");
+        int emptyindex = allTerminals.indexOf("$");
+//        System.out.println(emptyindex);
 
         int row = allNonTerminal.size();
         int col = allTerminals.size();
@@ -271,7 +274,7 @@ public class AnalyseList {
 
             for (int j = 0; j < rights.length; j++) {   //遍历右部的每一个部分
                 right = rights[j];
-                if (!right.equals("$")) {
+                if (!right.equals("$")) {  //右部是终结符且不是空的情况下
                     String[] splitedRight = right.split("");
                     for (int k = 0; k < splitedRight.length; k++) {
                         String s = splitedRight[k];
@@ -279,10 +282,10 @@ public class AnalyseList {
                             int AIndex = allNonTerminal.indexOf(left);  //数组中左部的位置
                             int aIndex = allTerminals.indexOf(s);   //M数组中右部元素的位置
                             M[AIndex][aIndex] = right;
-                        } else {
+                        } else {   //如果右部是非终结符，求右部的first集合进行匹配
                             ArrayList<String> firstRight = getFirst(splitedRight[k]);
                             for (int l = 0; l < firstRight.size(); l++) {
-                                if (first.contains(firstRight.get(l))) {
+                                if (first.contains(firstRight.get(l)) && !firstRight.get(l).equals("$")) {
                                     int AIndex = allNonTerminal.indexOf(left);  //数组中左部的位置
                                     int aIndex = allTerminals.indexOf(firstRight.get(l));   //M数组中右部元素的位置
                                     M[AIndex][aIndex] = right;
@@ -324,16 +327,12 @@ public class AnalyseList {
     }
 
     public static void main(String[] args) {
-//        Formatter formatter = new Formatter(System.out);
-//        formatter.format("%-15s %5d %10.2f\n", "My name is huhx", 5, 4.2);
 
         AnalyseList analyseList = new AnalyseList();
         analyseList.setProductions();
         analyseList.setNonTerminals();
         analyseList.setTerminals();
         analyseList.setFirst();
-//        analyseList.findNonTerminalAtRight("F");
-//        analyseList.getFollow("E");
         analyseList.setFollows();
         analyseList.predictedTable();
 
