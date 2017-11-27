@@ -367,33 +367,37 @@ public class AnalyseList {
 
         while (!analyseStack.empty()) {
             String topItem = analyseStack.peek();   //栈顶元素
-
-            if (topItem == "#" || terminals.contains(topItem)) {   //栈顶是终结符的话
+            if (topItem.equals("#") || terminals.contains(topItem)) {   //栈顶是终结符的话
                 if (String.valueOf(str.charAt(index)).equals(topItem)) {   //如果跟输入串相等  栈里面的出栈  index+1
                     formatter.format("%15s %15s %15s",
                             getStackContent(analyseStack),
                             str.substring(index),
                             (topItem.equals("#")) ? "接受" : "匹配");
                     System.out.println();
-                    analyseStack.pop();
-                    index++;
 
-                } else {
-                    System.out.println("出错，出错位置为" + index);
+                    index++;
+                    analyseStack.pop();
+//                    System.out.println(analyseStack);
+//                    System.out.println(analyseStack.peek());
+//                    System.out.println(str.substring(index));
+
+                }
+                else {
+                    return ("出错，出错位置为" + index);
                 }
             } else {  //栈顶为非终结符
                 int i = tableMap.get(analyseStack.peek());
                 int j = tableMap.get(String.valueOf(str.charAt(index)));
-                if (i < M.length && j < M[0].length) {
+//                System.out.println(j);
+                if (i < M.length && j <= M[0].length) {
                     if (j!=0){
                         j=j-1;
                     }  //因为tablemap里面有空
                     String tmp = M[i][j];
                     if (tmp.equals("error")) {
-                        System.out.println("出错，出错位置为" + index);
+                        return("出错，出错位置为" + index);
                     }
                     if (!tmp.equals("$")) {
-                        ss="";
                         ss = "执行 " + analyseStack.peek() + " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
@@ -405,7 +409,6 @@ public class AnalyseList {
                             analyseStack.push(String.valueOf(tmp.charAt(k)));
                         }
                     } else {
-                        ss="";
                         ss = "执行 " + analyseStack.peek() + " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
@@ -439,7 +442,6 @@ public class AnalyseList {
         analyseList.setTerminals();
         analyseList.setFirst();
         analyseList.setFollows();
-//        analyseList.predictedTable();
         analyseList.Analyse("i*i+i");
     }
 }
