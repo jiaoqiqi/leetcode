@@ -242,8 +242,6 @@ public class AnalyseList {
         allTerminals.addAll(terminals);
         allTerminals.add("#");
         allTerminals.remove("$");
-        int emptyindex = allTerminals.indexOf("$");
-//        System.out.println(emptyindex);
 
         int row = allNonTerminal.size();
         int col = allTerminals.size();
@@ -325,17 +323,23 @@ public class AnalyseList {
 
     }
 
-    public String Analyse(String str){
+
+    public String Analyse(String str) {
         Formatter formatter = new Formatter(System.out);  //格式化输出的实例化
         String[][] M = predictedTable();
+        String ss = "";
+        ArrayList allterminals =new ArrayList();
+        allterminals.addAll(terminals);
+        allterminals.remove("$");
 
-        HashMap<String , Integer> tableMap = new HashMap<String , Integer>();
+
+        HashMap<String, Integer> tableMap = new HashMap<String, Integer>();
         for (int i = 0; i < terminals.size(); ++i) {
-            tableMap.put(terminals.get(i),i);
+            tableMap.put(terminals.get(i), i);
         }
-        tableMap.put("#",terminals.size());
+        tableMap.put("#", terminals.size());
         for (int i = 0; i < nonTerminals.size(); ++i) {
-            tableMap.put(nonTerminals.get(i),i);
+            tableMap.put(nonTerminals.get(i), i);
         }
 
         //格式化输出hashmap
@@ -348,72 +352,81 @@ public class AnalyseList {
 //
 //        }
 
-        formatter.format("%10s", "符号栈");
+        formatter.format("%15s", "符号栈");
         formatter.format("%15s", "输入串");
         formatter.format("%15s", "所用产生式");
         System.out.println();
 
         Stack<String> analyseStack = new Stack<String>();  //初始化栈
         analyseStack.push("#");
-        analyseStack.push(productions.get(0).left);
+        analyseStack.push(productions.get(0).left);  //放入开始符号
 
-        str+="#";
+        str += "#";  //待分析字符串加#
+        int index = 0;  //用来找字符串元素的下标
 
-        int index =0;  //用来找字符串的元素
 
-        while (!analyseStack.empty()){
+        while (!analyseStack.empty()) {
             String topItem = analyseStack.peek();   //栈顶元素
 
-            if (topItem=="#" || terminals.contains(topItem)){   //栈顶是终结符的话
-                if (String.valueOf(str.charAt(index))== topItem){   //如果跟输入串相等  栈里面的出栈  index+1
+            if (topItem == "#" || terminals.contains(topItem)) {   //栈顶是终结符的话
+                if (String.valueOf(str.charAt(index)).equals(topItem)) {   //如果跟输入串相等  栈里面的出栈  index+1
                     formatter.format("%15s %15s %15s",
                             getStackContent(analyseStack),
                             str.substring(index),
-                            analyseStack.peek() .equals("#") ? "接受" : "匹配");
-                    index++;
+                            (topItem.equals("#")) ? "接受" : "匹配");
+                    System.out.println();
                     analyseStack.pop();
+                    index++;
 
-                }else{
-                    return ("出错，出错位置为"+index);
+                } else {
+                    System.out.println("出错，出错位置为" + index);
                 }
-            }else{  //栈顶为非终结符
+            } else {  //栈顶为非终结符
                 int i = tableMap.get(analyseStack.peek());
                 int j = tableMap.get(String.valueOf(str.charAt(index)));
-                if (i < M.length && j < M[0].length){
+                if (i < M.length && j < M[0].length) {
+                    if (j!=0){
+                        j=j-1;
+                    }  //因为tablemap里面有空
                     String tmp = M[i][j];
-                    if (tmp.equals("error")){
-                        System.out.println("出错，出错位置为"+index);
+                    if (tmp.equals("error")) {
+                        System.out.println("出错，出错位置为" + index);
                     }
-                    if (tmp.equals("$")){
-                       String  ss="执行 "+ analyseStack.peek()+ " -> " + tmp;
+                    if (!tmp.equals("$")) {
+                        ss="";
+                        ss = "执行 " + analyseStack.peek() + " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
                                 str.substring(index),
                                 ss);
+                        System.out.println();
                         analyseStack.pop();
-                        for (int k =tmp.length()-1;k>=0;--k) {
+                        for (int k = tmp.length() - 1; k >= 0; --k) {   //反向入栈
                             analyseStack.push(String.valueOf(tmp.charAt(k)));
                         }
-                    }else {
-                        String ss="执行 "+ analyseStack.peek()+ " -> " + tmp;
+                    } else {
+                        ss="";
+                        ss = "执行 " + analyseStack.peek() + " -> " + tmp;
                         formatter.format("%15s %15s %15s",
                                 getStackContent(analyseStack),
                                 str.substring(index),
                                 ss);
-                        analyseStack.pop();
-
+                        System.out.println();
+                            analyseStack.pop();
                     }
                 }
             }
         }
-        return "accept";
+        return "acc";
     }
 
-    public  String getStackContent(Stack sta){
-        String s="";
-        while (!sta.empty()){
-            s = sta.peek()+s;
-            sta.pop();
+    public String getStackContent(Stack sta) {
+        String s = "";
+        if (sta != null) {
+            for (int i = 0; i < sta.size(); i++) {
+                s+=(sta.get(i));
+
+            }
         }
         return s;
     }
@@ -428,8 +441,5 @@ public class AnalyseList {
         analyseList.setFollows();
 //        analyseList.predictedTable();
         analyseList.Analyse("i*i+i");
-
-
-
     }
 }
