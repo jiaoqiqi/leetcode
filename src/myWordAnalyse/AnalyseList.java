@@ -15,7 +15,7 @@ public class AnalyseList {
 
     public void setProductions() {
         try {
-            File file = new File("grammar.txt");
+            File file = new File("leftGrammer.txt");
             RandomAccessFile randomfile = new RandomAccessFile(file, "r");
 
             String line;
@@ -434,14 +434,49 @@ public class AnalyseList {
         return s;
     }
 
+    boolean isContainsLeft(Production pro){
+        boolean flag = false;
+        String left = pro.left;
+            String[] right = pro.right;
+            for (int j = 0; j < right.length; j++) {
+                String s = right[j];
+                if (String.valueOf(s.charAt(0)).equals(left)) {
+                    flag = true;
+                    break;
+                }
+            }
+        return flag;
+    }
+
+    public void clearLeft(){
+        for (int i = 0; i <productions.size(); i++) {
+            if (isContainsLeft(productions.get(i))){
+                String left = productions.get(i).left;
+                String[] rights = productions.get(i).right;
+                String right1 = rights[0];
+                String right2 = rights[1];
+                String newLeft = left+"'";
+                String[] newRight1 = {right2+newLeft};
+                String[] newRight2 = {right1.replaceAll(left,"")+newLeft,"$"};
+                Production pro1 = new Production(left,newRight1);
+                Production pro2 = new Production(newLeft,newRight2);
+
+                productions.add(pro1);
+                productions.add(pro2);
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
 
         AnalyseList analyseList = new AnalyseList();
         analyseList.setProductions();
-        analyseList.setNonTerminals();
-        analyseList.setTerminals();
-        analyseList.setFirst();
-        analyseList.setFollows();
-        analyseList.Analyse("i*i+i");
+//        analyseList.setNonTerminals();
+//        analyseList.setTerminals();
+//        analyseList.setFirst();
+//        analyseList.setFollows();
+//        analyseList.Analyse("i*i+i");
+        
     }
 }
