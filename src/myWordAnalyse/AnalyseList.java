@@ -15,7 +15,7 @@ public class AnalyseList {
 
     public void setProductions() {
         try {
-            File file = new File("leftGrammer.txt");
+            File file = new File("grammar.txt");
             RandomAccessFile randomfile = new RandomAccessFile(file, "r");
 
             String line;
@@ -472,11 +472,11 @@ public class AnalyseList {
 
         AnalyseList analyseList = new AnalyseList();
         analyseList.setProductions();
-//        analyseList.setNonTerminals();
-//        analyseList.setTerminals();
-//        analyseList.setFirst();
-//        analyseList.setFollows();
-//        analyseList.Analyse("i*i+i");
+        analyseList.setNonTerminals();
+        analyseList.setTerminals();
+        analyseList.setFirst();
+        analyseList.setFollows();
+        analyseList.Analyse("iiii");
         
     }
 }
