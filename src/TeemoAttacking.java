@@ -1,0 +1,22 @@
+public class TeemoAttacking {
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int result = 0, start = timeSeries[0], end = timeSeries[0] + duration;
+        for (int i = 1; i < timeSeries.length; i++) {
+            if (timeSeries[i] > end) {
+                result += end - start;
+                start = timeSeries[i];
+            }
+            end = timeSeries[i] + duration;
+        }
+        result += end - start;
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int [] timeSeries = {1,2};
+        int duration = 2;
+        TeemoAttacking teemoAttacking = new TeemoAttacking();
+        teemoAttacking.findPoisonedDuration(timeSeries,duration);
+    }
+}
