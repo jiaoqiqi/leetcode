@@ -19,9 +19,9 @@ public class TeemoAttacking {
     }
 
     public static void main(String[] args) {
-        int [] timeSeries = {1,2};
+        int[] timeSeries = {1, 2};
         int duration = 2;
         TeemoAttacking teemoAttacking = new TeemoAttacking();
-        teemoAttacking.findPoisonedDuration(timeSeries,duration);
+        teemoAttacking.findPoisonedDuration(timeSeries, duration);
     }
 }
