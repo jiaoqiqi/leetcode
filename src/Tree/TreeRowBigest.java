@@ -1,12 +1,14 @@
+package Tree;
+
 import java.util.*;
 
 /**
  * Definition for a binary tree node.
- * public class TreeNode {
+ * public class Tree.TreeNode {
  * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode(int x) { val = x; }
+ * Tree.TreeNode left;
+ * Tree.TreeNode right;
+ * Tree.TreeNode(int x) { val = x; }
  * }
  */
 //https://leetcode.com/problems/find-largest-value-in-each-tree-row/description/

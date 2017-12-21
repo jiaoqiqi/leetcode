@@ -1,3 +1,7 @@
+package Tree;
+
+import Tree.TreeNode;
+
 public class FindTreeNodes {
     public void preOrder(TreeNode subTree) {
 //        if(subTree!=null){
@@ -8,7 +12,7 @@ public class FindTreeNodes {
 //    }
 //
 //    //中序遍历
-//    public void inOrder(TreeNode subTree){
+//    public void inOrder(Tree.TreeNode subTree){
 //        if(subTree!=null){
 //            inOrder(subTree.left);
 //            visted(subTree);
@@ -17,7 +21,7 @@ public class FindTreeNodes {
 //    }
 //
 //    //后续遍历
-//    public void postOrder(TreeNode subTree) {
+//    public void postOrder(Tree.TreeNode subTree) {
 //        if (subTree != null) {
 //            postOrder(subTree.left);
 //            postOrder(subTree.right);

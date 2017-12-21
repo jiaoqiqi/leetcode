@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/invert-binary-tree/description/
+package Tree;//https://leetcode.com/problems/invert-binary-tree/description/
 
 public class InvertTree {
 

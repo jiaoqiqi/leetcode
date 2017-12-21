@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
+package Tree;//https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,11 +7,11 @@ import java.util.Queue;
 
 /**
  * Definition for a binary tree node.
- * public class TreeNode {
+ * public class Tree.TreeNode {
  *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     Tree.TreeNode left;
+ *     Tree.TreeNode right;
+ *     Tree.TreeNode(int x) { val = x; }
  * }
  */
 public class AverageofLevels {
@@ -22,7 +22,7 @@ public class AverageofLevels {
              return result;
          }
          q.add(root);  //加进去第一层
-//         TreeNode ro = q.poll();
+//         Tree.TreeNode ro = q.poll();
 //         System.out.println(ro.val);
          while(!q.isEmpty()){
              int n = q.size();  //某一行元素个数

@@ -1,5 +1,6 @@
+package Tree;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class TwoSumInTree {
@@ -26,12 +27,12 @@ public class TwoSumInTree {
         return result;
     }
 
-//    public boolean findTarget(TreeNode root, int k) {
+//    public boolean findTarget(Tree.TreeNode root, int k) {
 //        HashSet<Integer> set = new HashSet<>();
 //        return dfs(root, set, k);
 //    }
 //
-//    public boolean dfs(TreeNode root, HashSet<Integer> set, int k){
+//    public boolean dfs(Tree.TreeNode root, HashSet<Integer> set, int k){
 //        if(root == null)return false;
 //        if(set.contains(k - root.val))return true;
 //        set.add(root.val);

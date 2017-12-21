@@ -1,3 +1,5 @@
+package Tree;
+
 //https://leetcode.com/problems/merge-two-binary-trees/description/
 public class MergeTrees {
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {

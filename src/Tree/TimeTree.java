@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/trim-a-binary-search-tree/description/
+package Tree;//https://leetcode.com/problems/trim-a-binary-search-tree/description/
 
 public class TimeTree {
     public TreeNode trimBST(TreeNode root, int L, int R) {

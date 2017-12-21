@@ -1,3 +1,7 @@
+package Tree;
+
+import Tree.TreeNode;
+
 //https://leetcode.com/problems/maximum-binary-tree/description/
 public class BinaryTreeNode {
 
