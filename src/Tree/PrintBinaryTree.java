@@ -27,4 +27,14 @@ public class PrintBinaryTree {
         if (root == null) return 0;
         return 1 + Math.max(getHeight(root.left), getHeight(root.right));
     }
+
+    public static void main(String[] args) {
+        TreeNode t1 = new TreeNode(1);
+        t1.left = new TreeNode(2);
+        t1.right = new TreeNode(3);
+        t1.left.left=new TreeNode(4);
+
+        PrintBinaryTree printBinaryTree = new PrintBinaryTree();
+        System.out.println(printBinaryTree.printTree(t1));
+    }
 }
