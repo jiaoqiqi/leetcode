@@ -8,21 +8,24 @@ public class SlidingPuzzle {
 
     public int slidingPuzzle(int[][] board) {
         Set<String> seen = new HashSet<>(); // used to avoid duplicates
+
         String target = "123450";
-        // convert board to string - initial state.
+
         String s = Arrays.deepToString(board).replaceAll("\\[|\\]|,|\\s", "");
+
         Queue<String> q = new LinkedList<>(Arrays.asList(s));
-//        System.out.println(q);
+
         seen.add(s);
+
         int ans = 0; // record the # of rounds of Breadth Search
-        while (!q.isEmpty()) { // Not traverse all states yet?
+        while (!q.isEmpty()) {
             // loop used to control search breadth.
             for (int sz = q.size(); sz > 0; --sz) {
                 String str = q.poll();
                 if (str.equals(target)) {
                     return ans;
-                } // found target.
-                int i = str.indexOf('0'); // locate '0'
+                }
+                int i = str.indexOf('0');
                 int[] d = {1, -1, 3, -3}; // potential swap distances.
                 for (int k = 0; k < 4; ++k) { // traverse all options.
                     int j = i + d[k]; // potential swap index.
@@ -45,13 +48,6 @@ public class SlidingPuzzle {
         }
         return -1;
 
-    }
-
-
-    public void swap(int a, int b) {
-        int c = a + b;
-        a = c - a;
-        b = c - a;
     }
 
     public static void main(String[] args) {
