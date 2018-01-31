@@ -13,10 +13,11 @@ public class TopKFrequentElements {
             frequencyMap.put(num,frequencyMap.getOrDefault(num,0)+1);
         }
 
-//        System.out.println(frequencyMap);
+        System.out.println(frequencyMap);
 
         for (int key : frequencyMap.keySet()){
             int frequency = frequencyMap.get(key);
+            System.out.println(frequency);
             if (bucket[frequency] == null){
                     bucket[frequency] = new ArrayList<>();
 
@@ -25,11 +26,11 @@ public class TopKFrequentElements {
 
         }
 //
-//        for (int i = 0; i < bucket.length; i++) {
-//            List<Integer> integers = bucket[i];
-//            System.out.println(integers);
-//
-//        }
+        for (int i = 0; i < bucket.length; i++) {
+            List<Integer> integers = bucket[i];
+            System.out.println(integers);
+
+        }
 
         for (int pos = bucket.length - 1; pos >= 0 && result.size() < k; pos--) {
             if (bucket[pos] != null) {
@@ -43,7 +44,7 @@ public class TopKFrequentElements {
 
     public static void main(String[] args) {
         TopKFrequentElements topKFrequentElements = new TopKFrequentElements();
-        int [] nums = {1,1,1,2,2,3};
+        int [] nums = {5,5,5,6,7,6};
         int k = 2;
         System.out.println(topKFrequentElements.topKFrequent(nums,k));
     }
