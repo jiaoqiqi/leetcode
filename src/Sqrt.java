@@ -1,3 +1,4 @@
+//求平方根
 public class Sqrt {
     double sqrtby2(double a)
     {
