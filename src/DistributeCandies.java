@@ -1,5 +1,5 @@
 //https://leetcode.com/problems/distribute-candies/
-
+//分糖果,要求在数量相等的情况下一方获得最大种类
 import java.util.HashSet;
 import java.util.Set;
 

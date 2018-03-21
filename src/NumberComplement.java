@@ -1,8 +1,29 @@
 //https://leetcode.com/problems/number-complement/description/
 
-import javax.lang.model.element.NestingKind;
-
+//求一个数的补码对应的数
 public class NumberComplement {
+//    public int findComplement(int num)
+//    {
+//        int i = 0;
+//        int j = 0;
+//
+//        while (i < num)
+//        {
+//            i += Math.pow(2, j);
+//            j++;
+//        }
+//
+//        return i - num;
+//    }
+//
+
+//    public int findComplement(int num) {
+//        int n = 0;
+//        while (n < num) {
+//            n = (n << 1) | 1;
+//        }
+//        return n - num;
+//    }
     public int findComplement(int num) {
         String a = Integer.toBinaryString(num);
         String[] arrayA = a.split("");

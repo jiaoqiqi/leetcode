@@ -2,6 +2,19 @@
 
 public class HammingDistance {
     private int hammingDistance(int x, int y) {
+//        return Integer.bitCount(x ^ y);
+
+//        int d = 0;
+//        int bitxor = x ^ y;
+//
+//        while (bitxor > 0){
+//            if (bitxor % 2 == 1){
+//                d++;
+//            }
+//            bitxor = bitxor >> 1;
+//        }
+//
+//        return d;
         String a  = Integer.toBinaryString(x);
         String b = Integer.toBinaryString(y);
         int m =a.length();
