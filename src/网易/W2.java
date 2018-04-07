@@ -1,10 +1,11 @@
 package 网易;
 
-import java.math.BigInteger;
+import org.junit.Test;
+
 import java.util.Scanner;
 
 public class W2 {
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        Scanner in = new Scanner(System.in);
 //        BigInteger N = in.nextBigInteger();
 //        BigInteger K = in.nextBigInteger();
@@ -22,10 +23,10 @@ public class W2 {
 //        }
 //        System.out.println(res);
 //    }
-public static void main(String[] args) {
-    Scanner in = new Scanner(System.in);
-    int N = in.nextInt();
-    int K = in.nextInt();
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();
+        int K = in.nextInt();
 //    int res = 0;
 //    for (int i = 1; i <= N; i++) {
 //        for (int j = 1; j <= N; j++) {
@@ -37,8 +38,13 @@ public static void main(String[] args) {
 //
 //    }
 //    System.out.println(res);
-    System.out.println(Math.pow(2,(N-K))-1);
-    System.out.println(Math.pow(2,2));
+        System.out.println(Math.pow(2, (N - K)) - 1);
+        System.out.println(Math.pow(2, 2));
 
-}
+    }
+
+    @Test
+    public void testW2() {
+
+    }
 }
