@@ -6,8 +6,12 @@ public class AaddBTest {
 
     @Test
     public void getSum() {
-        assert 1 < 2;
+        assertEquals(3, aaddB(1,2));
         System.out.println(1);
+    }
+
+    private int aaddB(int i, int i1) {
+        return i+i1;
     }
 
     @Test
