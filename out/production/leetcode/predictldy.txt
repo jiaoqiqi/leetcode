@@ -1,4 +1,0 @@
-S#ABBA -> ABBA
-A#a|$ -> a|$
-B#b|$ -> b|$
- -> cCe|d
